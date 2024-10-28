@@ -67,12 +67,12 @@ class GUIContainer(GUIElement):
         super().__init__(size, relativePos, visible)
         if children is None:
             children = []
-        self.children = list(children)
+        self._children = list(children)
 
     def draw(self):
         """call the draw method of every child that is visible"""
         super().draw()
-        for child in self.children:
+        for child in self.getChildren():
             if child.visible:
                 child.draw()
 
@@ -80,7 +80,7 @@ class GUIContainer(GUIElement):
         assert child.parent is None, "Element already added to a container"
 
         child.parent = self
-        self.children.append(child)
+        self._children.append(child)
 
         return self
 
@@ -90,8 +90,44 @@ class GUIContainer(GUIElement):
         should be overridden by subclasses that modifies the position of their children individually rather
         than all together (which would be done by changing the relativePos attribute of the container)
         """
-        assert child in self.children, "Element not a child of this container"
+        assert child in self.getChildren(), "Element not a child of this container"
         return Vec2()
+
+    def getChildren(self):
+        return self._children
+
+class LayeredGUIContainer(GUIContainer):
+
+    def __init__(self, size: Vec2 = Vec2(0.0, 0.0), relativePos: Vec2 = Vec2(0, 0),
+                 visible: bool = True, children: list[GUIElement] = None, childrenLayers: list[int] = None):
+        super().__init__(size, relativePos, visible)
+
+        if children is None:
+            children = []
+        if childrenLayers is None:
+            childrenLayers = []
+
+        assert len(children) == len(childrenLayers)
+
+        self._children = dict()
+
+        for i in range(len(children)):
+            self.addChild(children[i], childrenLayers[i])
+
+    def addChild(self, child: GUIElement, layer: int = 0):
+        assert child.parent is None, "Element already added to a container"
+
+        child.parent = self
+
+        if layer in self._children.keys():
+            self._children[layer].append(child)
+        else:
+            self._children[layer] = [child]
+
+        return self
+
+    def getChildren(self):
+        return [child for layer in sorted(self._children.keys()) for child in self._children[layer]]
 
 class RootContainer(GUIContainer):  # not sure if this needs its own class or not, but I thought why not
     pass

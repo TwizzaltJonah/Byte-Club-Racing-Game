@@ -21,7 +21,7 @@ class AlignmentContainer(GUIContainer):
         if childrenAlignments is None:
             childrenAlignments = []
 
-        assert len(self.children) == len(childrenAlignments)
+        assert len(self.getChildren()) == len(childrenAlignments)
 
         # sets all shorthand values to their full name or CENTER if not valid
         for i in range(len(childrenAlignments)):
@@ -41,8 +41,8 @@ class AlignmentContainer(GUIContainer):
         self.childrenAlignments.append(alignment)
 
     def getAlignmentOfChild(self, child: GUIElement):
-        assert child in self.children, "Element not a child of this container"
-        return self.childrenAlignments[self.children.index(child)]
+        assert child in self.getChildren(), "Element not a child of this container"
+        return self.childrenAlignments[self.getChildren().index(child)]
 
     def getChildOffset(self, child: GUIElement):
         """return the offset of a specific child
