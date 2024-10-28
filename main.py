@@ -50,7 +50,7 @@ def mainLoop():
     window.refreshWindow()
 
     # testing stuff
-    image.image.rotateBy(1)
+    image.image.rotateBy(window.getDelta() * 60)
 
 
 def stopProgram():
