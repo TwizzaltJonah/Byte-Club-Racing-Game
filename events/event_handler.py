@@ -8,13 +8,17 @@ class PygameEventListener:
 
     note: if an instance is instantiated directly, it will not successfully listen for events
           to make it successfully listen for events use the createPygameEventListener function instead"""
-    def __init__(self, eventToListenFor: int, onEvent: callable, *args):
+    def __init__(self, eventToListenFor: int, onEvent: callable, passEvent: bool = False, *args):
         self.eventToListenFor = eventToListenFor
         self.onEvent = onEvent
+        self.passEvent = passEvent
         self.onEventArgs = args
 
-    def executeFunction(self):
-        self.onEvent(*self.onEventArgs)
+    def executeFunction(self, event: pygame.event.EventType):
+        if self.passEvent:
+            self.onEvent(event, *self.onEventArgs)
+        else:
+            self.onEvent(*self.onEventArgs)
 
     def add(self):
         """add this PygameEventListener to the pygmeEventListeners dict
@@ -42,4 +46,4 @@ def broadcastPygameEvents(events: list[pygame.event.EventType]):
     for event in events:
         if event.type in pygameEventListeners.keys():
             for listener in pygameEventListeners[event.type]:
-                listener.executeFunction()
+                listener.executeFunction(event)
