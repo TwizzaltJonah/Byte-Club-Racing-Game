@@ -16,22 +16,23 @@ class PygameEventListener:
     def executeFunction(self):
         self.onEvent(*self.onEventArgs)
 
-def createPygameEventListener(eventToListenFor: int, onEvent: callable, *args):
-    """create a PygameEventListener, add it to the pygameEventListeners dict, and return the PygameEventListener
+    def add(self):
+        """add this PygameEventListener to the pygmeEventListeners dict
 
-    also see broadcastPygameEvents docstring
+        this will allow self's onEvent function to be called when the event is broadcasted
+        """
+        if self.eventToListenFor not in pygameEventListeners.keys():
+            pygameEventListeners[self.eventToListenFor] = [self]
+        else:
+            pygameEventListeners[self.eventToListenFor].append(self)
 
-    :param eventToListenFor: the int representing which pygame event to listen for
-    :param onEvent: the function to call when the event occurs
-    :param args: the args for the onEvent function (optional)
-    :return: the PygameEventListener this function creates and adds to the pygameEventListeners dict
-    """
-    listener = PygameEventListener(eventToListenFor, onEvent, *args)
-    if eventToListenFor not in pygameEventListeners.keys():
-        pygameEventListeners[eventToListenFor] = [listener]
-    else:
-        pygameEventListeners[eventToListenFor].append(listener)
-    return listener
+    def remove(self):
+        """remove this PygameEventListener from the pygameEventListeners dict
+
+        this should be done whenever it is done being used, otherwise it will just sit in the dict until the program terminates
+        """
+        if self in pygameEventListeners[self.eventToListenFor]:
+            pygameEventListeners[self.eventToListenFor].remove(self)
 
 def broadcastPygameEvents(events: list[pygame.event.EventType]):
     """broadcast all events to their listeners

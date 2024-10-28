@@ -1,7 +1,7 @@
 import time
 
 import pygame
-from events.event_handler import createPygameEventListener, broadcastPygameEvents
+from events.event_handler import PygameEventListener, broadcastPygameEvents
 from pygame_rendering import window
 from guis.base_guis import RootContainer
 from guis.container_guis import AlignmentContainer
@@ -23,7 +23,8 @@ def main():
 def start():
     window.createWindow()
 
-    createPygameEventListener(pygame.QUIT, stopProgram)
+    quitEvent = PygameEventListener(pygame.QUIT, stopProgram)
+    quitEvent.add()
 
     # create a gui to draw to (just to test)
     # NOTE: in the future, there will be a scene system so that you can easily switch between GUIs and also render the game world
