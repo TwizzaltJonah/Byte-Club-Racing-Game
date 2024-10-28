@@ -8,6 +8,10 @@ class Vec2:
         self.x: float = float(x)
         self.y: float = float(y)
 
+    @staticmethod
+    def fromTuple(xy: tuple[float | int]):
+        return Vec2(xy[0], xy[1])
+
     def __repr__(self):
         return f"Vec2({self.x}, {self.y})"
 
