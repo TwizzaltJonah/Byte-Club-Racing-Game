@@ -33,6 +33,10 @@ class GUIElement(ABC):
     def addToContainer(self, container: GUIContainer):
         container.addChild(self)
 
+    def onAddedToContainer(self, container: GUIContainer):
+        """callback function so that inheritors can detect when they are added to a container"""
+        pass
+
     def toggleVisible(self):
         self.visible = not self.visible
 
@@ -81,6 +85,7 @@ class GUIContainer(GUIElement):
 
         child.parent = self
         self._children.append(child)
+        child.onAddedToContainer(self)
 
         return self
 
@@ -123,6 +128,8 @@ class LayeredGUIContainer(GUIContainer):
             self._children[layer].append(child)
         else:
             self._children[layer] = [child]
+
+        child.onAddedToContainer(self)
 
         return self
 
