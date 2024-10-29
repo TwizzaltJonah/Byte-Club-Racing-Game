@@ -39,6 +39,9 @@ def start():
     rootGUI.addChild(alignmentContainer)
     alignmentContainer.addChild(image, "CENTER")
 
+    button = ImageButton("sprites/SpriteTest.png", size=Vec2(128, 128), onDown=stopProgram)
+    rootGUI.addChild(button)
+
 
 def mainLoop():
     global isRunning

@@ -35,7 +35,7 @@ class PygameEventListener:
 
         this should be done whenever it is done being used, otherwise it will just sit in the dict until the program terminates
         """
-        if self in pygameEventListeners[self.eventToListenFor]:
+        if self.eventToListenFor in pygameEventListeners and self in pygameEventListeners[self.eventToListenFor]:
             pygameEventListeners[self.eventToListenFor].remove(self)
 
 def broadcastPygameEvents(events: list[pygame.event.EventType]):
