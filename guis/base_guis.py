@@ -30,6 +30,10 @@ class GUIElement(ABC):
         """
         pass
 
+    def unload(self):
+        """function to be called when this element is unloaded"""
+        pass
+
     def addToContainer(self, container: GUIContainer):
         container.addChild(self)
 
@@ -71,7 +75,7 @@ class GUIContainer(GUIElement):
         super().__init__(size, relativePos, visible)
         if children is None:
             children = []
-        self._children = list(children)
+        self._children: list[GUIElement] = children
 
     def draw(self):
         """call the draw method of every child that is visible"""
@@ -79,6 +83,12 @@ class GUIContainer(GUIElement):
         for child in self.getChildren():
             if child.visible:
                 child.draw()
+
+    def unload(self):
+        """function to be called when this element is unloaded"""
+        super().unload()
+        for child in self.getChildren():
+            child.unload()
 
     def addChild(self, child: GUIElement):
         assert child.parent is None, "Element already added to a container"

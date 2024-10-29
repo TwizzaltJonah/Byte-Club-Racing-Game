@@ -8,6 +8,7 @@ from guis.container_guis import AlignmentContainer
 from guis.image_guis import GUIImage
 from general_utils.vec2 import Vec2
 from pygame_rendering.images import Image
+from guis.interactable_guis import ImageButton
 
 isRunning: bool = True
 rootGUI: RootContainer = None
@@ -56,6 +57,7 @@ def mainLoop():
 def stopProgram():
     global isRunning
     isRunning = False
+    rootGUI.unload()
 
 
 if __name__ == '__main__':
