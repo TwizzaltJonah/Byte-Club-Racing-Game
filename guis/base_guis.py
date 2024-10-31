@@ -18,6 +18,7 @@ class GUIElement(ABC):
         self.__size = size
         self.visible = visible
         self.parent: GUIContainer | type(None) = None
+        self.isLoaded: bool = False
 
     @abstractmethod
     def draw(self):
@@ -30,9 +31,15 @@ class GUIElement(ABC):
         """
         pass
 
+    def load(self):
+        """function to be called when this element is unloaded"""
+        assert not self.isLoaded
+        self.isLoaded = True
+
     def unload(self):
         """function to be called when this element is unloaded"""
-        pass
+        assert self.isLoaded
+        self.isLoaded = False
 
     def addToContainer(self, container: GUIContainer):
         container.addChild(self)
@@ -71,11 +78,11 @@ class GUIContainer(GUIElement):
     """
 
     def __init__(self, size: Vec2 = Vec2(0.0, 0.0), relativePos: Vec2 = Vec2(0, 0),
-                 visible: bool = True, children: list[GUIElement] = None):
+                 visible: bool = True, children: list[GUIElement] | tuple[GUIElement] = None):
         super().__init__(size, relativePos, visible)
         if children is None:
             children = []
-        self._children: list[GUIElement] = children
+        self._children: list[GUIElement] = list(children)
 
     def draw(self):
         """call the draw method of every child that is visible"""
@@ -83,6 +90,12 @@ class GUIContainer(GUIElement):
         for child in self.getChildren():
             if child.visible:
                 child.draw()
+
+    def load(self):
+        """function to be called when this element is loaded"""
+        super().load()
+        for child in self.getChildren():
+            child.load()
 
     def unload(self):
         """function to be called when this element is unloaded"""
@@ -147,4 +160,7 @@ class LayeredGUIContainer(GUIContainer):
         return [child for layer in sorted(self._children.keys()) for child in self._children[layer]]
 
 class RootContainer(GUIContainer):  # not sure if this needs its own class or not, but I thought why not
-    pass
+
+    def draw(self):
+        assert self.isLoaded
+        super().draw()

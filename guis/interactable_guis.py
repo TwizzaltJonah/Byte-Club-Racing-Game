@@ -20,8 +20,15 @@ class Button(GUIElement):
         self.onDownEventListener = PygameEventListener(pygame.MOUSEBUTTONDOWN, self.onMouseDown, True)
         self.onUpEventListener = PygameEventListener(pygame.MOUSEBUTTONUP, self.onMouseUp, True)
 
-    def onAddedToContainer(self, container: GUIContainer):
+    def load(self):
+        super().load()
         self.onDownEventListener.add()
+        self.onUpEventListener.add()
+
+    def unload(self):
+        super().unload()
+        self.onDownEventListener.remove()
+        self.onUpEventListener.remove()
 
     def onMouseDown(self, event: pygame.event.EventType):
         if Rect(self.getAbsolutePosition(), self.getSize()).isPointInside(Vec2.fromTuple(event.dict["pos"])):

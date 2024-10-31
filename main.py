@@ -42,6 +42,8 @@ def start():
     button = ImageButton("sprites/SpriteTest.png", size=Vec2(128, 128), onDown=stopProgram)
     rootGUI.addChild(button)
 
+    rootGUI.load()
+
 
 def mainLoop():
     global isRunning
