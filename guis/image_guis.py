@@ -12,7 +12,19 @@ class GUIImage(GUIElement):
         self.image.blitAt(self.getAbsolutePosition())
 
     def setSize(self, size: Vec2):
-        self.image.scaleTo(size)
+        self.scaleTo(size)
 
     def getSize(self):
         return self.image.getSize()
+
+    def scaleTo(self, size: Vec2):
+        self.image.scaleTo(size)
+
+    def scaleBy(self, scale: Vec2):
+        self.image.scaleBy(scale)
+
+    def rotateBy(self, rotation: float):
+        self.image.rotateBy(rotation)
+
+    def rotateTo(self, rotation: float):
+        self.image.rotateTo(rotation)
