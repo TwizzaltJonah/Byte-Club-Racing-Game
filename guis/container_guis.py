@@ -21,7 +21,10 @@ class AlignmentContainer(GUIContainer):
         if childrenAlignments is None:
             childrenAlignments = []
 
-        assert len(self.getChildren()) == len(childrenAlignments)
+        # ensures they are the same length
+        for i in range(len(self.getChildren()) - len(childrenAlignments)):
+            childrenAlignments.append("CENTER")
+        childrenAlignments = childrenAlignments[:len(self.getChildren())]
 
         # sets all shorthand values to their full name or CENTER if not valid
         for i in range(len(childrenAlignments)):

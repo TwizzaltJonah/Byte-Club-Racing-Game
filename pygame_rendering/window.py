@@ -15,15 +15,19 @@ display: pygame.Surface = None
 previousLastFrameTime = 0
 lastFrameTime = 0
 
+isOpen: bool = False
+
 def createWindow():
     """create a window and initialize pygame"""
-    global display, previousLastFrameTime, lastFrameTime
+    global display, previousLastFrameTime, lastFrameTime, isOpen
     if display is None:
         pygame.init()
         display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
         previousLastFrameTime = time.time()
         lastFrameTime = time.time()
+
+        isOpen = True
 
 def refreshWindow():
     """refreshes the window
@@ -38,6 +42,10 @@ def refreshWindow():
     frameCount += 1
     previousLastFrameTime = lastFrameTime
     lastFrameTime = time.time()
+
+def closeWindow():
+    global isOpen
+    isOpen = False
 
 def getScreenSize():
     return Vec2(SCREEN_WIDTH, SCREEN_HEIGHT)

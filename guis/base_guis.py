@@ -78,11 +78,18 @@ class GUIContainer(GUIElement):
     """
 
     def __init__(self, size: Vec2 = Vec2(0.0, 0.0), relativePos: Vec2 = Vec2(0, 0),
-                 visible: bool = True, children: list[GUIElement] | tuple[GUIElement] = None):
+                 visible: bool = True, children: list[GUIElement] = None):
         super().__init__(size, relativePos, visible)
         if children is None:
             children = []
-        self._children: list[GUIElement] = list(children)
+        self._children: list[GUIElement] = []
+
+        for child in children:
+            assert child.parent is None, "Element already added to a container"
+
+            child.parent = self
+            self._children.append(child)
+            child.onAddedToContainer(self)
 
     def draw(self):
         """call the draw method of every child that is visible"""
@@ -109,7 +116,6 @@ class GUIContainer(GUIElement):
         child.parent = self
         self._children.append(child)
         child.onAddedToContainer(self)
-
         return self
 
     def getChildOffset(self, child: GUIElement):

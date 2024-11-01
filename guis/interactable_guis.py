@@ -31,11 +31,11 @@ class Button(GUIElement):
         self.onUpEventListener.remove()
 
     def onMouseDown(self, event: pygame.event.EventType):
-        if Rect(self.getAbsolutePosition(), self.getSize()).isPointInside(Vec2.fromTuple(event.dict["pos"])):
+        if self.onDown is not None and Rect(self.getAbsolutePosition(), self.getSize()).isPointInside(Vec2.fromTuple(event.dict["pos"])):
             self.onDown(*self.onDownArgs)
 
     def onMouseUp(self, event: pygame.event.EventType):
-        if Rect(self.getAbsolutePosition(), self.getSize()).isPointInside(Vec2.fromTuple(event.dict["pos"])):
+        if self.onUp is not None and Rect(self.getAbsolutePosition(), self.getSize()).isPointInside(Vec2.fromTuple(event.dict["pos"])):
             self.onUp(*self.onUpArgs)
 
     def draw(self):
@@ -50,6 +50,7 @@ class ImageButton(Button):
         super().__init__(self.image.getSize(), relativePos, onDown, onDownArgs, onUp, onUpArgs)
 
     def draw(self):
+        super().draw()
         self.image.blitAt(self.getAbsolutePosition())
 
     def unload(self):
