@@ -7,6 +7,9 @@ from guis.container_guis import AlignmentContainer
 from pygame_rendering import window
 
 class MainMenuScene(Scene):
+    """Main menu scene
+
+    currently this is just a placeholder"""
 
     def __init__(self):
         super().__init__(RootContainer(children=[
@@ -18,6 +21,7 @@ class MainMenuScene(Scene):
         ]))
 
 class TestScene(Scene):
+    """Test scene to demonstrate how scenes can be switched to and from"""
 
     def __init__(self):
         self.testImage1 = GUIImage("sprites/SpriteTest.png", size=Vec2(640, 640))

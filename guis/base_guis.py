@@ -131,6 +131,12 @@ class GUIContainer(GUIElement):
         return self._children
 
 class LayeredGUIContainer(GUIContainer):
+    """A gui container that orders elements based on an int value they are assigned
+
+    children are put into a dict instead of a list with the keys being the int that represents their 'layer'
+    the 'getChildren' method is used to get a list of all children in ascending order of layer
+    consequently, children are also drawn in ascending order of layer
+    """
 
     def __init__(self, size: Vec2 = Vec2(0.0, 0.0), relativePos: Vec2 = Vec2(0, 0),
                  visible: bool = True, children: list[GUIElement] = None, childrenLayers: list[int] = None):
@@ -163,6 +169,7 @@ class LayeredGUIContainer(GUIContainer):
         return self
 
     def getChildren(self):
+        """return all children in ascending order based on their layer"""
         return [child for layer in sorted(self._children.keys()) for child in self._children[layer]]
 
 class RootContainer(GUIContainer):  # not sure if this needs its own class or not, but I thought why not

@@ -7,6 +7,7 @@ from events.event_handler import PygameEventListener
 import pygame
 
 class Button(GUIElement):
+    """A Button class for making buttons that can be pressed and detect when they are clicked"""
 
     def __init__(self, size: Vec2 = Vec2(), relativePos: Vec2 = Vec2(), onDown: callable = None, onDownArgs: tuple = (), onUp: callable = None, onUpArgs: tuple = ()):
         super().__init__(size, relativePos)
@@ -42,7 +43,10 @@ class Button(GUIElement):
         pass
 
 class ImageButton(Button):
+    """An extension of the Button class that also renders an Image
 
+    note: behaves similarly to the GUIImage class, but does not inherit from it and is completely different
+    """
     def __init__(self, filePath: str, relativePos: Vec2 = Vec2(), visible: bool = True, rotation: float = 0.0, size: Vec2 = None,
                  onDown: callable = None, onDownArgs: tuple = (), onUp: callable = None, onUpArgs: tuple = ()):
         self.image = Image(filePath, rotation, size)
